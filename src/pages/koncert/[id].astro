@@ -1,0 +1,44 @@
+---
+// src/pages/koncert/[id].astro
+import MainLayout from '../../layouts/MainLayout.astro';
+import { concerts } from '../../data/concerts.js';
+
+export async function getStaticPaths() {
+  const monthNames = ["jan", "febr", "márc", "ápr", "máj", "jún", "júl", "aug", "szept", "okt", "nov", "dec"];
+
+  return concerts.map(c => {
+    const d = new Date(c.isoDate);
+    const dateStr = `${d.getDate()} ${monthNames[d.getMonth()].toUpperCase()}`;
+
+    // Egyedi azonosító generálása az URL-hez (pl: 2026-04-30-revkomarom)
+    const id = `${c.isoDate}-${c.venue.toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // Ékezetek eltávolítása
+      .replace(/[^a-z0-9]/g, '-') // Speciális karakterek cseréje kötőjelre
+      .replace(/-+/g, '-') // Dupla kötőjelek törlése
+      .replace(/^-|-$/g, '')}`; // Szélekről kötőjel törlése
+
+    return {
+      params: { id },
+      props: {
+        title: `${dateStr} - ${c.venue} | ${c.band}`,
+        target: c.link
+      }
+    };
+  });
+}
+
+const { title, target } = Astro.props;
+---
+
+<MainLayout title={title}>
+  <div class="flex flex-col items-center justify-center min-h-[60vh] text-center px-6">
+    <div class="w-12 h-12 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mb-6"></div>
+    <h1 class="text-2xl font-bold text-white mb-2 italic uppercase tracking-tighter">{title}</h1>
+    <p class="text-slate-400">Átirányítás a videókhoz...</p>
+  </div>
+
+  <script define:vars={{ target }}>
+    // Azonnali továbbküldés a céloldalra
+    window.location.href = target;
+  </script>
+</MainLayout>

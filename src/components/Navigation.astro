@@ -1,0 +1,144 @@
+---
+// src/components/Navigation.astro
+---
+<nav class="fixed top-0 left-0 z-[200] w-full border-b border-white/10 bg-slate-950/95 backdrop-blur-md">
+  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between relative">
+
+    <a href="/" class="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500 z-[220] whitespace-nowrap uppercase tracking-tighter">
+      BUKAI LACI
+    </a>
+
+    <button id="menu-toggle" class="lg:hidden z-[220] text-white p-2 outline-none" aria-label="Menü">
+      <svg id="hamburger-icon" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 transition-all" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path id="menu-path" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+
+    <div id="nav-menu" class="hidden lg:flex fixed lg:static inset-0 w-full h-[100dvh] lg:h-auto bg-slate-950 lg:bg-transparent flex-col lg:flex-row items-center justify-center lg:justify-end gap-8 lg:gap-8 pt-20 lg:pt-0 z-[210] overflow-y-auto lg:overflow-visible pb-20 lg:pb-0">
+
+      <a href="/" class="text-2xl lg:text-xs font-black lg:font-bold text-white hover:text-cyan-400 transition-colors uppercase tracking-widest">Kezdőlap</a>
+      <a href="/rolam" class="text-2xl lg:text-xs font-black lg:font-bold text-white hover:text-cyan-400 transition-colors uppercase tracking-widest">Rólam</a>
+
+      <div class="relative group">
+        <button class="dropdown-toggle flex items-center gap-1 text-2xl lg:text-xs font-black lg:font-bold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-widest outline-none">
+            Galéria
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 lg:h-4 lg:w-4 transition-transform duration-300 group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div class="lg:absolute lg:top-full lg:left-1/2 lg:-translate-x-1/2 lg:mt-6 hidden group-hover:flex flex-col bg-transparent lg:bg-slate-900/95 lg:backdrop-blur-md lg:border lg:border-white/10 rounded-xl lg:p-2 lg:w-48 z-50 transition-all gap-4 lg:gap-1 shadow-none lg:shadow-2xl shadow-black pt-4 lg:pt-0 items-center lg:items-stretch">
+            <div class="hidden lg:block absolute -top-6 left-0 w-full h-6"></div>
+            <a href="/galeria" class="text-xl lg:text-xs font-bold text-slate-400 lg:text-white hover:text-cyan-400 lg:hover:bg-white/5 px-4 lg:py-3 rounded-lg transition-colors uppercase tracking-widest text-center">Fotógaléria</a>
+            <a href="/ai-kepek" class="text-xl lg:text-xs font-bold text-slate-400 lg:text-white hover:text-cyan-400 lg:hover:bg-white/5 px-4 lg:py-3 rounded-lg transition-colors uppercase tracking-widest text-center">AI Képek</a>
+        </div>
+      </div>
+
+      <div class="relative group">
+        <button class="dropdown-toggle flex items-center gap-1 text-2xl lg:text-xs font-black lg:font-bold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-widest outline-none">
+            Videók
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 lg:h-4 lg:w-4 transition-transform duration-300 group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div class="lg:absolute lg:top-full lg:left-1/2 lg:-translate-x-1/2 lg:mt-6 hidden group-hover:flex flex-col bg-transparent lg:bg-slate-900/95 lg:backdrop-blur-md lg:border lg:border-white/10 rounded-xl lg:p-2 lg:w-64 z-50 transition-all gap-4 lg:gap-1 shadow-none lg:shadow-2xl shadow-black pt-4 lg:pt-0 items-center lg:items-stretch">
+            <div class="hidden lg:block absolute -top-6 left-0 w-full h-6"></div>
+            <a href="/videok/omega-forever" class="text-xl lg:text-xs font-bold text-slate-400 lg:text-white hover:text-cyan-400 lg:hover:bg-white/5 px-4 lg:py-3 rounded-lg transition-colors uppercase tracking-widest text-center whitespace-nowrap">Omega Forever Band</a>
+            <a href="/videok/locomotiv-revival" class="text-xl lg:text-xs font-bold text-slate-400 lg:text-white hover:text-cyan-400 lg:hover:bg-white/5 px-4 lg:py-3 rounded-lg transition-colors uppercase tracking-widest text-center whitespace-nowrap">Locomotiv Revival Band</a>
+        </div>
+      </div>
+
+      <a href="/koncertek" class="text-2xl lg:text-xs font-black lg:font-bold text-white hover:text-cyan-400 transition-colors uppercase tracking-widest">Koncertek</a>
+
+      <div class="flex flex-col lg:flex-row items-center gap-6 lg:gap-4 mt-8 lg:mt-0 lg:ml-4">
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.bukailaci.eu" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-blue-500 transition-colors flex items-center gap-2" aria-label="Megosztás Facebookon">
+          <svg class="w-6 h-6 lg:w-5 lg:h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
+          </svg>
+          <span class="lg:hidden text-lg">Megosztás Facebookon</span>
+        </a>
+
+        <a href="/kapcsolat" class="block w-full lg:w-auto text-center px-8 py-5 lg:py-2 bg-white/10 lg:bg-transparent text-white lg:text-white border border-white/20 lg:border-white/20 hover:border-cyan-400/50 hover:text-cyan-400 rounded-xl lg:rounded-full font-black lg:font-bold uppercase tracking-widest text-base lg:text-xs transition-all">
+            Kapcsolat
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<script>
+  function setupNavigation() {
+    const toggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('nav-menu');
+    const path = document.getElementById('menu-path');
+
+    if (toggle && menu && path) {
+      toggle.addEventListener('click', () => {
+        menu.classList.toggle('hidden');
+        menu.classList.toggle('flex');
+        document.body.classList.toggle('overflow-hidden');
+
+        if (menu.classList.contains('hidden')) {
+          path.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+        } else {
+          path.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+        }
+      });
+    }
+
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+
+    dropdownToggles.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const dropdownMenu = btn.nextElementSibling;
+        const icon = btn.querySelector('svg');
+
+        if (dropdownMenu && icon) {
+          const isHidden = dropdownMenu.classList.contains('hidden');
+
+          document.querySelectorAll('.dropdown-toggle').forEach(otherBtn => {
+            const otherMenu = otherBtn.nextElementSibling;
+            const otherIcon = otherBtn.querySelector('svg');
+            if (otherMenu && otherBtn !== btn) {
+              otherMenu.classList.add('hidden');
+              otherMenu.classList.remove('flex', 'lg:flex');
+              if (otherIcon) otherIcon.classList.remove('rotate-180');
+            }
+          });
+
+          if (isHidden) {
+            dropdownMenu.classList.remove('hidden');
+            dropdownMenu.classList.add('flex', 'lg:flex');
+            icon.classList.add('rotate-180');
+          } else {
+            dropdownMenu.classList.add('hidden');
+            dropdownMenu.classList.remove('flex', 'lg:flex');
+            icon.classList.remove('rotate-180');
+          }
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (target && !target.closest('.group')) {
+            document.querySelectorAll('.dropdown-toggle').forEach(btn => {
+                const menu = btn.nextElementSibling;
+                const icon = btn.querySelector('svg');
+                if (menu) {
+                    menu.classList.add('hidden');
+                    menu.classList.remove('flex', 'lg:flex');
+                }
+                if (icon) {
+                    icon.classList.remove('rotate-180');
+                }
+            });
+        }
+    });
+  }
+
+  setupNavigation();
+  document.addEventListener('astro:after-swap', setupNavigation);
+</script>

@@ -1,0 +1,73 @@
+---
+// src/layouts/MainLayout.astro
+import Navigation from '../components/Navigation.astro';
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const {
+	title,
+	description = "Bukai Laci dobos portfóliója. Omega Forever Band és Locomotiv Revival Band koncertvideók, galéria és kapcsolat."
+} = Astro.props;
+
+// --- DINAMIKUS CÍM ÉS URL KEZELÉSE ---
+const urlParams = Astro.url.searchParams;
+const dynamicTitle = urlParams.get('t') || title;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+// KÉP ÉS AZONOSÍTÓK - Frissítve a te adataiddal
+const favicon = "/favicon.svg";
+const ogImage = "/bukai-laci-dobos.png";
+const fbId = "1658830911811102";
+const gaId = "G-SXF3PPJGTV";
+---
+
+<!doctype html>
+<html lang="hu">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+
+		<script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+		<script is:inline define:vars={{ gaId }}>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+			gtag('config', gaId);
+		</script>
+
+		<title>{dynamicTitle}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalURL} />
+
+		<link rel="icon" type="image/svg+xml" href={favicon} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url} />
+		<meta property="og:title" content={dynamicTitle} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL(ogImage, Astro.url)} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="fb:app_id" content={fbId} />
+
+		<meta name="generator" content={Astro.generator} />
+	</head>
+	<body class="bg-slate-950 text-slate-200 selection:bg-cyan-500 selection:text-black">
+		<Navigation />
+		<main class="pt-20">
+			<slot />
+		</main>
+
+		<footer class="border-t border-white/5 py-12 mt-24">
+			<div class="max-w-7xl mx-auto px-6 text-center">
+				<p class="text-slate-500 text-sm font-medium uppercase tracking-widest">
+					&copy; {new Date().getFullYear()} Bukai Laci. Minden jog fenntartva.
+				</p>
+			</div>
+		</footer>
+	</body>
+</html>

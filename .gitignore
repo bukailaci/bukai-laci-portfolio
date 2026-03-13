@@ -1,24 +1,31 @@
-# build output
+# Build kimenet (a generált weboldal mappája)
 dist/
-# generated types
+
+# Astro által generált típusok és gyorsítótár
 .astro/
 
-# dependencies
+# Függőségek (ezek a mappák nagyon nagyok, nem valók GitHubra)
 node_modules/
 
-# logs
+# Naplófájlok (hibakereséshez)
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-
-# environment variables
+# Környezeti változók (titkos kulcsok, ha lennének)
 .env
 .env.production
 
-# macOS-specific files
+# macOS specifikus fájlok
 .DS_Store
 
-# jetbrains setting folder
+# JetBrains / VS Code beállítások
 .idea/
+.vscode/
+
+# --- EGYEDI KIHAGYÁSOK ---
+
+# Nagy méretű média mappák - kihagyva a GitHub feltöltésből a méretlimit miatt
+src/assets/galeria/
+src/assets/ai-kepek/

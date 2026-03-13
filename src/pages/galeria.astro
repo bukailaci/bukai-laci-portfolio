@@ -1,0 +1,122 @@
+---
+// src/pages/galeria.astro
+import MainLayout from '../layouts/MainLayout.astro';
+import { Image } from 'astro:assets';
+
+// AZ ÚJ, MODERN BEOLVASÁS:
+const images = Object.values(import.meta.glob('/src/assets/galeria/*.{jpeg,jpg,png,gif}', { eager: true }));
+---
+
+<MainLayout title="Profi Galéria | Bukai Laci">
+    <div class="max-w-6xl mx-auto px-6 py-12 md:py-20">
+        <h1 class="text-5xl md:text-6xl lg:text-7xl font-black mb-12 tracking-tighter italic uppercase underline decoration-cyan-500 decoration-8 underline-offset-8 text-white break-words">
+            Galéria
+        </h1>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {images.map((img: any, index) => (
+                <div
+                    class="gallery-item group relative aspect-square overflow-hidden rounded-[45px] bg-slate-900 cursor-zoom-in transition-all duration-700 hover:-translate-y-4"
+                    data-index={index}
+                    data-src={img.default.src}
+                >
+                    <Image
+                        src={img.default}
+                        alt={`Fotó ${index + 1}`}
+                        width={800}
+                        height={800}
+                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    />
+                    <div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                        <span class="bg-white/10 backdrop-blur-md px-6 py-3 rounded-full border border-white/20 text-sm font-bold tracking-widest uppercase text-white">
+                            Nagyítás
+                        </span>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+
+    <div id="lightbox" class="fixed inset-0 z-[300] hidden bg-slate-950/95 backdrop-blur-2xl flex items-center justify-center p-4 md:p-10 transition-opacity duration-300 opacity-0">
+        <button id="close-lightbox" class="absolute top-8 right-8 z-[310] text-white/50 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <button id="prev-btn" class="absolute left-4 md:left-10 z-[310] text-white/30 hover:text-white transition-all p-4 bg-white/5 rounded-full border border-white/10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <button id="next-btn" class="absolute right-4 md:right-10 z-[310] text-white/30 hover:text-white transition-all p-4 bg-white/5 rounded-full border border-white/10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+        <img id="lightbox-img" src="" alt="Nagyítás" class="max-w-full max-h-[90vh] rounded-3xl shadow-2xl transition-all duration-500 scale-90 object-contain" />
+    </div>
+</MainLayout>
+
+<script>
+    function setupGallery() {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+        const closeBtn = document.getElementById('close-lightbox');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const items = document.querySelectorAll('.gallery-item');
+
+        let currentIndex = 0;
+        const imagesData = Array.from(items).map(item => item.getAttribute('data-src'));
+
+        const updateImage = (index: number) => {
+            if (!lightboxImg || !imagesData[index]) return;
+            lightboxImg.style.opacity = '0';
+            setTimeout(() => {
+                lightboxImg.src = imagesData[index]!;
+                lightboxImg.style.opacity = '1';
+            }, 200);
+            currentIndex = index;
+        };
+
+        items.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                if (lightbox && lightboxImg) {
+                    updateImage(index);
+                    lightbox.classList.remove('hidden');
+                    setTimeout(() => {
+                        lightbox.classList.add('opacity-100');
+                        lightboxImg.classList.add('scale-100');
+                        lightboxImg.classList.remove('scale-90');
+                    }, 10);
+                }
+            });
+        });
+
+        const showNext = () => { currentIndex = (currentIndex + 1) % imagesData.length; updateImage(currentIndex); };
+        const showPrev = () => { currentIndex = (currentIndex - 1 + imagesData.length) % imagesData.length; updateImage(currentIndex); };
+        const closeLightbox = () => {
+            if (lightbox && lightboxImg) {
+                lightbox.classList.remove('opacity-100');
+                lightboxImg.classList.add('scale-90');
+                lightboxImg.classList.remove('scale-100');
+                setTimeout(() => lightbox.classList.add('hidden'), 300);
+            }
+        };
+
+        nextBtn?.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+        prevBtn?.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+        closeBtn?.addEventListener('click', closeLightbox);
+        lightbox?.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+        window.addEventListener('keydown', (e) => {
+            if (lightbox?.classList.contains('hidden')) return;
+            if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'ArrowLeft') showPrev();
+            if (e.key === 'Escape') closeLightbox();
+        });
+    }
+
+    setupGallery();
+    document.addEventListener('astro:after-swap', setupGallery);
+</script>

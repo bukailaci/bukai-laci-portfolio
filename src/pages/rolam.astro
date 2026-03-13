@@ -1,0 +1,88 @@
+---
+// src/pages/rolam.astro
+import MainLayout from '../layouts/MainLayout.astro';
+import { Image } from 'astro:assets';
+
+// A főoldalon is használt kép beimportálása
+import profileImg from '../assets/ai-hero.jpg';
+---
+
+<MainLayout title="Rólam | Bukai Laci">
+  <div class="max-w-7xl mx-auto px-6 py-12 md:py-24">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-24">
+
+      <div class="relative group w-full max-w-2xl mx-auto lg:mx-0">
+        <div class="absolute -inset-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-[2rem] blur-2xl opacity-20 group-hover:opacity-40 transition duration-1000"></div>
+
+        <div class="relative overflow-hidden rounded-[2rem] border border-white/10 w-full flex items-center justify-center bg-slate-900/50 shadow-2xl">
+           <Image
+            src={profileImg}
+            alt="Bukai Laci dobos"
+            class="w-full h-auto object-contain transition duration-700 group-hover:scale-105"
+          />
+        </div>
+
+        <div class="absolute -bottom-4 -right-4 bg-slate-900 border border-white/10 p-4 md:p-6 rounded-2xl shadow-2xl hidden sm:block">
+          <p class="text-cyan-400 font-black text-3xl md:text-4xl italic leading-none">30+</p>
+          <p class="text-slate-400 text-[10px] md:text-xs uppercase tracking-widest font-bold">Év a színpadon</p>
+        </div>
+      </div>
+
+      <div class="space-y-8">
+        <header>
+          <span class="text-cyan-400 font-mono text-sm tracking-[0.3em] uppercase block mb-4">A ritmus mögött</span>
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tighter italic text-white leading-tight mb-6 uppercase">BUKAI LACI</h1>
+          <div class="h-2 w-24 bg-cyan-500 rounded-full"></div>
+        </header>
+
+        <div class="space-y-6 text-slate-300 text-lg md:text-xl leading-relaxed font-medium">
+          <p>
+            A dobok mögött töltött több mint <strong class="text-white">három évtized</strong> alatt megtanultam, hogy a zene nem csak hangok sorozata, hanem lüktetés, ami összeköti az embereket.
+          </p>
+          <p>
+            Jelenleg két meghatározó formációban, az <strong class="text-white italic">Omega Forever Band</strong> és a <strong class="text-white italic">Locomotiv Revival Band</strong> soraiban gondoskodom az ütemekről, tisztelegve a magyar rocktörténelem legnagyobb legendái előtt.
+          </p>
+          <p>
+            Számomra minden koncert egy új utazás, ahol a precizitás találkozik a nyers energiával. Célom, hogy a közönség minden egyes ütést ne csak halljon, hanem a mellkasában érezzen.
+          </p>
+        </div>
+
+        <div class="pt-8 flex flex-wrap gap-4">
+          <a href="/videok/omega-forever" class="px-6 py-4 bg-white/5 border border-white/10 rounded-xl hover:border-cyan-500/50 hover:bg-white/10 transition-all group">
+            <span class="text-white font-bold italic group-hover:text-cyan-400 transition-colors uppercase tracking-tight">Omega Forever Band Videók</span>
+          </a>
+          <a href="/videok/locomotiv-revival" class="px-6 py-4 bg-white/5 border border-white/10 rounded-xl hover:border-emerald-500/50 hover:bg-white/10 transition-all group">
+            <span class="text-white font-bold italic group-hover:text-emerald-400 transition-colors uppercase tracking-tight">Locomotiv Revival Band Videók</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12 border-t border-white/10 pt-16 mb-24">
+        <div>
+            <h2 class="text-2xl font-black italic text-white mb-6 uppercase tracking-tighter">Felszerelés</h2>
+            <div class="space-y-8">
+                <div>
+                    <h3 class="text-cyan-400 font-bold uppercase text-xs tracking-widest mb-3">Dobok</h3>
+                    <p class="text-slate-300">Gretsch Drums CM1-E825 Catalina Maple Cherry Burst</p>
+                </div>
+                <div>
+                    <h3 class="text-cyan-400 font-bold uppercase text-xs tracking-widest mb-3">Cinek</h3>
+                    <p class="text-slate-300">Paiste PST 5</p>
+                </div>
+                <div>
+                    <h3 class="text-cyan-400 font-bold uppercase text-xs tracking-widest mb-3">Hardver</h3>
+                    <p class="text-slate-300">---</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center py-20 bg-gradient-to-b from-white/5 to-transparent rounded-[3rem] border border-white/5">
+        <h2 class="text-4xl md:text-6xl font-black italic text-white mb-8 uppercase tracking-tighter">Keress meg!</h2>
+        <a href="/kapcsolat" class="inline-block px-12 py-5 bg-cyan-500 text-black font-black uppercase tracking-widest rounded-2xl hover:bg-cyan-400 transition-all hover:scale-105 shadow-[0_0_30px_rgba(6,182,212,0.3)]">
+            Kapcsolatfelvétel
+        </a>
+    </div>
+  </div>
+</MainLayout>

@@ -1,0 +1,123 @@
+---
+// src/pages/ai-kepek.astro
+import MainLayout from '../layouts/MainLayout.astro';
+import { Image } from 'astro:assets';
+
+// AI képek automatikus beolvasása az új, modern módszerrel
+const aiImages = Object.values(import.meta.glob('/src/assets/ai-kepek/*.{jpeg,jpg,png,gif,webp}', { eager: true }));
+---
+
+<MainLayout title="AI Generált Képek | Modern Galéria">
+    <div class="max-w-6xl mx-auto px-6 py-12 md:py-20">
+        <header class="mb-16">
+            <span class="text-cyan-400 font-mono text-sm tracking-[0.3em] uppercase">Neural Network Art</span>
+            <h1 class="text-6xl md:text-8xl font-black mt-4 tracking-tighter italic text-white underline decoration-cyan-500/30">AI KÉPEK</h1>
+        </header>
+
+        {aiImages.length === 0 && <p class="text-slate-500">Még nincsenek képek a src/assets/ai-kepek/ mappában.</p>}
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {aiImages.map((img: any, index) => (
+                <div
+                    class="ai-gallery-item group relative aspect-square overflow-hidden rounded-[40px] bg-slate-900 border border-white/5 transition-all duration-700 hover:-translate-y-4 cursor-zoom-in"
+                    data-index={index}
+                    data-src={img.default.src}
+                >
+                    <Image
+                        src={img.default}
+                        alt={`AI Generált Kép ${index + 1}`}
+                        width={800}
+                        height={800}
+                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                    />
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-end p-8">
+                        <span class="text-cyan-400 font-mono text-xs tracking-widest uppercase">
+                            Nagyítás
+                        </span>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </div>
+
+    <div id="lightbox" class="fixed inset-0 z-[300] hidden bg-slate-950/95 backdrop-blur-2xl flex items-center justify-center p-4 md:p-10 transition-opacity duration-300 opacity-0">
+        <button id="close-lightbox" class="absolute top-8 right-8 z-[310] text-white/50 hover:text-white transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <button id="prev-btn" class="absolute left-4 md:left-10 z-[310] text-white/30 hover:text-white transition-all p-4 bg-white/5 rounded-full border border-white/10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <button id="next-btn" class="absolute right-4 md:right-10 z-[310] text-white/30 hover:text-white transition-all p-4 bg-white/5 rounded-full border border-white/10">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+        <img id="lightbox-img" src="" alt="Nagyítás" class="max-w-full max-h-[90vh] rounded-3xl shadow-2xl transition-all duration-500 scale-90 object-contain" />
+    </div>
+</MainLayout>
+
+<script>
+    function setupAiGallery() {
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
+        const closeBtn = document.getElementById('close-lightbox');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const items = document.querySelectorAll('.ai-gallery-item');
+
+        let currentIndex = 0;
+        const imagesData = Array.from(items).map(item => item.getAttribute('data-src'));
+
+        const updateImage = (index: number) => {
+            if (!lightboxImg || !imagesData[index]) return;
+            lightboxImg.style.opacity = '0';
+            setTimeout(() => {
+                lightboxImg.src = imagesData[index]!;
+                lightboxImg.style.opacity = '1';
+            }, 200);
+            currentIndex = index;
+        };
+
+        items.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                if (lightbox && lightboxImg) {
+                    updateImage(index);
+                    lightbox.classList.remove('hidden');
+                    setTimeout(() => {
+                        lightbox.classList.add('opacity-100');
+                        lightboxImg.classList.remove('scale-90');
+                    }, 10);
+                }
+            });
+        });
+
+        const showNext = () => { currentIndex = (currentIndex + 1) % imagesData.length; updateImage(currentIndex); };
+        const showPrev = () => { currentIndex = (currentIndex - 1 + imagesData.length) % imagesData.length; updateImage(currentIndex); };
+        const closeLightbox = () => {
+            if (lightbox && lightboxImg) {
+                lightbox.classList.remove('opacity-100');
+                lightboxImg.classList.add('scale-90');
+                setTimeout(() => lightbox.classList.add('hidden'), 300);
+            }
+        };
+
+        nextBtn?.addEventListener('click', (e) => { e.stopPropagation(); showNext(); });
+        prevBtn?.addEventListener('click', (e) => { e.stopPropagation(); showPrev(); });
+        closeBtn?.addEventListener('click', closeLightbox);
+        lightbox?.addEventListener('click', (e) => { if (e.target === lightbox) closeLightbox(); });
+
+        window.addEventListener('keydown', (e) => {
+            if (lightbox?.classList.contains('hidden')) return;
+            if (e.key === 'ArrowRight') showNext();
+            if (e.key === 'ArrowLeft') showPrev();
+            if (e.key === 'Escape') closeLightbox();
+        });
+    }
+
+    setupAiGallery();
+    document.addEventListener('astro:after-swap', setupAiGallery);
+</script>

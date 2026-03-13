@@ -1,17 +1,73 @@
+﻿---
+// src/pages/index.astro
+import MainLayout from '../layouts/MainLayout.astro';
+import { Image } from 'astro:assets';
+import heroImage from '../assets/ai-hero.jpg';
 ---
 
----
+<MainLayout title="Főoldal | Bukai Laci">
+    <section class="w-full relative overflow-hidden">
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+        <div class="max-w-7xl mx-auto px-6 py-10 md:py-20 lg:py-32 relative">
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+                <div class="text-center lg:text-left order-2 lg:order-1 relative z-10">
+                    <span class="text-cyan-400 font-mono tracking-[0.3em] uppercase text-xs md:text-sm lg:text-base">Üdvözöllek a jövőben</span>
+                    <div class="w-full">
+                        {/* Itt van a varázslat: 5 lépcsős dinamikus méretezés */}
+                        <h1 class="text-5xl md:text-7xl lg:text-5xl xl:text-7xl 2xl:text-8xl font-black py-4 md:py-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 inline-block w-full tracking-tighter">
+                            Üdvözöllek!
+                        </h1>
+                    </div>
+                    <p class="text-lg md:text-xl lg:text-lg xl:text-2xl text-slate-400 mt-4 md:mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
+                        Ez az új, modern otthonom a weben.
+                    </p>
+                    <div class="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center lg:justify-start">
+                        <a href="/galeria" class="px-8 md:px-10 py-3 md:py-4 bg-white text-black rounded-full font-bold hover:bg-cyan-400 transition-all hover:scale-105 shadow-xl text-center text-sm md:text-base">Galéria</a>
+                        <a href="/videok" class="px-8 md:px-10 py-3 md:py-4 bg-slate-900 border border-white/10 text-white rounded-full font-bold hover:bg-white/5 transition-all text-center text-sm md:text-base">Videók</a>
+                    </div>
+                </div>
+
+                <div class="relative group mx-auto lg:mx-0 w-full max-w-[320px] md:max-w-md lg:max-w-none order-1 lg:order-2">
+
+                    <div class="absolute -inset-6 md:-inset-20 bg-cyan-500/20 rounded-[60px] blur-[60px] opacity-40 md:opacity-0 md:group-hover:opacity-100 animate-pulse-glow z-0 pointer-events-none transition-opacity duration-700"></div>
+
+                    <div class="relative rounded-[45px] border border-white/10 bg-slate-950 overflow-hidden shadow-2xl transition-all duration-700 group-hover:scale-105 group-hover:-rotate-6 z-10">
+                        <Image
+                            src={heroImage}
+                            alt="Bukai Laci"
+                            class="w-full h-auto transition-transform duration-1000"
+                        />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</MainLayout>
+
+<style>
+    /* Pulzálás sebessége és típusa */
+    .animate-pulse-glow {
+        animation: pulse-glow 2s ease-in-out infinite;
+    }
+
+    /* Desktopon megállítjuk az animációt */
+    @media (min-width: 1024px) {
+        .animate-pulse-glow {
+            animation: none;
+        }
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% {
+            opacity: 0.1;
+            transform: scale(0.12);
+        }
+        50% {
+            opacity: 0.9;
+            transform: scale(3.08);
+        }
+    }
+</style>
