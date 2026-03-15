@@ -6,7 +6,7 @@ import heroImage from '../assets/ai-hero.jpg';
 ---
 
 <MainLayout title="Főoldal | Bukai Laci">
-    <section class="w-full relative overflow-hidden">
+    <section class="w-full relative overflow-hidden bg-slate-950">
 
         <div class="max-w-7xl mx-auto px-6 py-10 md:py-20 lg:py-32 relative">
 
@@ -15,7 +15,6 @@ import heroImage from '../assets/ai-hero.jpg';
                 <div class="text-center lg:text-left order-2 lg:order-1 relative z-10">
                     <span class="text-cyan-400 font-mono tracking-[0.3em] uppercase text-xs md:text-sm lg:text-base">Üdvözöllek a jövőben</span>
                     <div class="w-full">
-                        {/* Itt van a varázslat: 5 lépcsős dinamikus méretezés */}
                         <h1 class="text-5xl md:text-7xl lg:text-5xl xl:text-7xl 2xl:text-8xl font-black py-4 md:py-6 leading-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 inline-block w-full tracking-tighter">
                             Üdvözöllek!
                         </h1>
@@ -23,22 +22,37 @@ import heroImage from '../assets/ai-hero.jpg';
                     <p class="text-lg md:text-xl lg:text-lg xl:text-2xl text-slate-400 mt-4 md:mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
                         Ez az új, modern otthonom a weben.
                     </p>
-                    <div class="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4 sm:gap-5 justify-center lg:justify-start">
-                        <a href="/galeria" class="px-8 md:px-10 py-3 md:py-4 bg-white text-black rounded-full font-bold hover:bg-cyan-400 transition-all hover:scale-105 shadow-xl text-center text-sm md:text-base">Galéria</a>
-                        <a href="/videok" class="px-8 md:px-10 py-3 md:py-4 bg-slate-900 border border-white/10 text-white rounded-full font-bold hover:bg-white/5 transition-all text-center text-sm md:text-base">Videók</a>
+                    
+                    {/* Gombok szekció - Egységes stílus, mély árnyék és pulzálás */}
+                    <div class="mt-8 md:mt-10 flex flex-wrap gap-4 sm:gap-5 justify-center lg:justify-start">
+                        {[
+                            { name: 'Galéria', url: '/galeria' },
+                            { name: 'Videók', url: '/videok' },
+                            { name: 'Koncertek', url: '/koncertek' },
+                            { name: 'Kapcsolat', url: '/kapcsolat' }
+                        ].map((btn) => (
+                            <a 
+                                href={btn.url} 
+                                class="px-8 md:px-10 py-3 md:py-4 bg-slate-900/80 border border-white/10 text-white rounded-full font-bold hover:bg-slate-800 transition-all hover:scale-105 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.9)] animate-pulse-soft text-center text-sm md:text-base min-w-[140px]"
+                            >
+                                {btn.name}
+                            </a>
+                        ))}
                     </div>
                 </div>
 
                 <div class="relative group mx-auto lg:mx-0 w-full max-w-[320px] md:max-w-md lg:max-w-none order-1 lg:order-2">
+                    {/* Nincs többé lüktető fény, csak egy mély, sötét árnyék-terület a mélységért */}
+                    <div class="absolute inset-10 bg-black/60 blur-[100px] z-0 pointer-events-none"></div>
 
-                    <div class="absolute -inset-6 md:-inset-20 bg-cyan-500/20 rounded-[60px] blur-[60px] opacity-40 md:opacity-0 md:group-hover:opacity-100 animate-pulse-glow z-0 pointer-events-none transition-opacity duration-700"></div>
-
-                    <div class="relative rounded-[45px] border border-white/10 bg-slate-950 overflow-hidden shadow-2xl transition-all duration-700 group-hover:scale-105 group-hover:-rotate-6 z-10">
+                    <div class="relative rounded-[45px] border border-white/10 bg-slate-950 overflow-hidden shadow-[0_35px_60px_-15px_rgba(0,0,0,0.9)] transition-all duration-700 group-hover:scale-105 z-10">
                         <Image
                             src={heroImage}
                             alt="Bukai Laci"
                             class="w-full h-auto transition-transform duration-1000"
                         />
+                        {/* Finom belső árnyék a kép széleinél */}
+                        <div class="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.5)] pointer-events-none"></div>
                     </div>
                 </div>
 
@@ -48,26 +62,26 @@ import heroImage from '../assets/ai-hero.jpg';
 </MainLayout>
 
 <style>
-    /* Pulzálás sebessége és típusa */
-    .animate-pulse-glow {
-        animation: pulse-glow 2s ease-in-out infinite;
+    /* Lágy pulzálás kizárólag a gomboknak */
+    .animate-pulse-soft {
+        animation: pulse-soft 3s ease-in-out infinite;
     }
 
-    /* Desktopon megállítjuk az animációt */
-    @media (min-width: 1024px) {
-        .animate-pulse-glow {
-            animation: none;
-        }
-    }
-
-    @keyframes pulse-glow {
+    @keyframes pulse-soft {
         0%, 100% {
-            opacity: 0.1;
-            transform: scale(0.12);
+            transform: scale(1);
+            filter: brightness(1);
+            box-shadow: 0 10px 30px -5px rgba(0,0,0,0.9);
         }
         50% {
-            opacity: 0.9;
-            transform: scale(3.08);
+            transform: scale(1.03);
+            filter: brightness(1.1);
+            box-shadow: 0 20px 40px -8px rgba(0,0,0,1);
         }
+    }
+
+    /* Globális háttérszín rögzítése, hogy ne legyen világosabb */
+    :global(body) {
+        background-color: #020617; /* slate-950 */
     }
 </style>
