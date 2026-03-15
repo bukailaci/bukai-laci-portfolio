@@ -19,6 +19,7 @@
       <a href="/" class="text-2xl lg:text-xs font-black lg:font-bold text-white hover:text-cyan-400 transition-colors uppercase tracking-widest">Kezdőlap</a>
       <a href="/rolam" class="text-2xl lg:text-xs font-black lg:font-bold text-white hover:text-cyan-400 transition-colors uppercase tracking-widest">Rólam</a>
 
+      {/* Galéria Dropdown - Most már csak a valós fotókkal */}
       <div class="relative group">
         <button class="dropdown-toggle flex items-center gap-1 text-2xl lg:text-xs font-black lg:font-bold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-widest outline-none">
             Galéria
@@ -29,10 +30,10 @@
         <div class="lg:absolute lg:top-full lg:left-1/2 lg:-translate-x-1/2 lg:mt-6 hidden group-hover:flex flex-col bg-transparent lg:bg-slate-900/95 lg:backdrop-blur-md lg:border lg:border-white/10 rounded-xl lg:p-2 lg:w-48 z-50 transition-all gap-4 lg:gap-1 shadow-none lg:shadow-2xl shadow-black pt-4 lg:pt-0 items-center lg:items-stretch">
             <div class="hidden lg:block absolute -top-6 left-0 w-full h-6"></div>
             <a href="/galeria" class="text-xl lg:text-xs font-bold text-slate-400 lg:text-white hover:text-cyan-400 lg:hover:bg-white/5 px-4 lg:py-3 rounded-lg transition-colors uppercase tracking-widest text-center">Fotógaléria</a>
-            <a href="/ai-kepek" class="text-xl lg:text-xs font-bold text-slate-400 lg:text-white hover:text-cyan-400 lg:hover:bg-white/5 px-4 lg:py-3 rounded-lg transition-colors uppercase tracking-widest text-center">AI Képek</a>
         </div>
       </div>
 
+      {/* Videók Dropdown */}
       <div class="relative group">
         <button class="dropdown-toggle flex items-center gap-1 text-2xl lg:text-xs font-black lg:font-bold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-widest outline-none">
             Videók
@@ -44,6 +45,21 @@
             <div class="hidden lg:block absolute -top-6 left-0 w-full h-6"></div>
             <a href="/videok/omega-forever" class="text-xl lg:text-xs font-bold text-slate-400 lg:text-white hover:text-cyan-400 lg:hover:bg-white/5 px-4 lg:py-3 rounded-lg transition-colors uppercase tracking-widest text-center whitespace-nowrap">Omega Forever Band</a>
             <a href="/videok/locomotiv-revival" class="text-xl lg:text-xs font-bold text-slate-400 lg:text-white hover:text-cyan-400 lg:hover:bg-white/5 px-4 lg:py-3 rounded-lg transition-colors uppercase tracking-widest text-center whitespace-nowrap">Locomotiv Revival Band</a>
+        </div>
+      </div>
+
+      {/* ÚJ AI Dropdown */}
+      <div class="relative group">
+        <button class="dropdown-toggle flex items-center gap-1 text-2xl lg:text-xs font-black lg:font-bold text-white group-hover:text-cyan-400 transition-colors uppercase tracking-widest outline-none">
+            AI
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 lg:h-4 lg:w-4 transition-transform duration-300 group-hover:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </button>
+        <div class="lg:absolute lg:top-full lg:left-1/2 lg:-translate-x-1/2 lg:mt-6 hidden group-hover:flex flex-col bg-transparent lg:bg-slate-900/95 lg:backdrop-blur-md lg:border lg:border-white/10 rounded-xl lg:p-2 lg:w-48 z-50 transition-all gap-4 lg:gap-1 shadow-none lg:shadow-2xl shadow-black pt-4 lg:pt-0 items-center lg:items-stretch">
+            <div class="hidden lg:block absolute -top-6 left-0 w-full h-6"></div>
+            <a href="/ai-kepek" class="text-xl lg:text-xs font-bold text-slate-400 lg:text-white hover:text-cyan-400 lg:hover:bg-white/5 px-4 lg:py-3 rounded-lg transition-colors uppercase tracking-widest text-center">AI Fotók</a>
+            <a href="/ai-videok" class="text-xl lg:text-xs font-bold text-slate-400 lg:text-white hover:text-cyan-400 lg:hover:bg-white/5 px-4 lg:py-3 rounded-lg transition-colors uppercase tracking-widest text-center">AI Videók</a>
         </div>
       </div>
 
@@ -86,7 +102,6 @@
     }
 
     const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
-
     dropdownToggles.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
