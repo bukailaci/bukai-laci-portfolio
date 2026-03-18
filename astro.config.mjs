@@ -1,14 +1,21 @@
-// @ts-check
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  // IDE ÍRD BE A SAJÁT WEBOLDALAD CÍMÉT (pl. https://bukailaci.hu)
-  // Ez segít az Astrónak a pontos linkek legenerálásában.
-  site: 'https://www.bukailaci.eu',
+  // FONTOS: Ide írd be a weboldalad végleges címét!
+  // Enélkül az Astro nem tudja legenerálni a kanonikus URL-eket.
+  site: 'https://bukailaci.eu',
+
+  output: 'static',
 
   vite: {
-    plugins: [tailwindcss()]
+    plugins: [tailwindcss()],
+  },
+
+  build: {
+    // Ez biztosítja a Double Commander barát .html kimenetet
+    format: 'file',
+    assets: 'assets'
   }
 });

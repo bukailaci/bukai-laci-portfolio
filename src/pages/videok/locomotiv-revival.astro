@@ -4,39 +4,70 @@ import MainLayout from '../../layouts/MainLayout.astro';
 
 const bandName = "Locomotiv Revival Band";
 const videos = [
-  { title: "Mindenki,Miénk itt a tér", id: "M5YxYppFgzg" },
+  { title: "Mindenki, Miénk itt a tér", id: "M5YxYppFgzg" },
   { title: "LGT 2013 mix", id: "91ZZ0K4ssio" },
 ];
 ---
 
 <MainLayout title={`${bandName} | Videók`}>
-    <div class="max-w-6xl mx-auto px-6 py-12">
+    <div class="max-w-7xl mx-auto px-6 py-12 md:py-20">
         <header class="mb-16 text-right">
             <span class="text-emerald-400 font-mono text-sm tracking-[0.3em] uppercase">Live Performance</span>
-            <h1 class="text-5xl md:text-7xl font-black mt-4 tracking-tighter italic text-white underline decoration-emerald-500/30 uppercase">
+            <h1 class="text-5xl md:text-8xl font-black mt-4 tracking-tighter bg-clip-text text-transparent bg-gradient-to-l from-blue-400 via-cyan-400 to-emerald-400 uppercase inline-block italic">
                 {bandName}
             </h1>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-16">
             {videos.map((video) => (
-                <div class="group relative bg-slate-900 rounded-[40px] overflow-hidden border border-white/5 hover:border-emerald-500/30 transition-all duration-500">
-                    <div class="aspect-video w-full">
-                        <iframe
-                            class="w-full h-full"
-                            src={`https://www.youtube.com/embed/${video.id}`}
-                            title={video.title}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen
-                        ></iframe>
+                <div class="group relative">
+                    <div class="absolute inset-4 -z-10 overflow-visible pointer-events-none">
+                        <div class="animated-gradient absolute inset-0 opacity-20 group-hover:opacity-60 blur-[50px] transition-all duration-700 scale-90 group-hover:scale-110"></div>
                     </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-white group-hover:text-emerald-400 transition-colors italic uppercase">
-                            {video.title}
-                        </h3>
+
+                    <div class="relative bg-slate-950/40 backdrop-blur-2xl rounded-[32px] overflow-hidden border border-white/20 transition-all duration-500 group-hover:border-emerald-500/50 group-hover:-translate-y-2 shadow-2xl">
+                        <div class="aspect-video w-full relative">
+                            <iframe
+                                class="w-full h-full relative z-10"
+                                src={`https://www.youtube.com/embed/${video.id}`}
+                                title={video.title}
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen
+                            ></iframe>
+
+                            <div class="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.5)] pointer-events-none z-20"></div>
+                        </div>
+
+                        <div class="p-8">
+                            <h3 class="text-xl md:text-2xl font-black text-white group-hover:text-emerald-400 transition-colors uppercase tracking-tight italic">
+                                {video.title}
+                            </h3>
+                        </div>
                     </div>
                 </div>
             ))}
         </div>
     </div>
 </MainLayout>
+
+<style>
+    /* AZONOS ANIMÁCIÓ A TELJES SZINKRONHOZ */
+    .animated-gradient {
+        background: linear-gradient(
+            125deg,
+            #06b6d4,
+            #3b82f6,
+            #10b981,
+            #8b5cf6,
+            #06b6d4
+        );
+        background-size: 250% 250%;
+        animation: glow-flow 8s linear infinite;
+    }
+
+    @keyframes glow-flow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+</style>
