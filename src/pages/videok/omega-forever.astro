@@ -16,7 +16,8 @@ const videos = [
     <div class="max-w-7xl mx-auto px-6 py-12 md:py-20">
         <header class="mb-16">
             <span class="text-cyan-400 font-mono text-sm tracking-[0.3em] uppercase">Drum Cam & Live</span>
-            <h1 class="text-5-xl md:text-8xl font-black mt-4 tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 uppercase inline-block italic">
+            {/* JAVÍTÁS: pr-6 py-2 hozzáadva */}
+            <h1 class="text-5xl md:text-8xl font-black mt-4 tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 uppercase inline-block italic pr-6 py-2">
                 {bandName}
             </h1>
         </header>
@@ -30,19 +31,19 @@ const videos = [
 
                     <div class="relative bg-slate-950/40 backdrop-blur-2xl rounded-[32px] overflow-hidden border border-white/20 transition-all duration-500 group-hover:border-cyan-500/50 group-hover:-translate-y-2 shadow-2xl">
                         <div class="aspect-video w-full relative">
-                            <iframe
+                             <iframe
                                 class="w-full h-full relative z-10"
                                 src={`https://www.youtube.com/embed/${video.id}`}
                                 title={video.title}
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen
                             ></iframe>
-
                             <div class="absolute inset-0 shadow-[inset_0_0_40px_rgba(0,0,0,0.5)] pointer-events-none z-20"></div>
                         </div>
 
                         <div class="p-8">
-                            <h3 class="text-xl md:text-2xl font-black text-white group-hover:text-cyan-400 transition-colors uppercase tracking-tight italic">
+                            {/* JAVÍTÁS: pr-4 py-1 hozzáadva */}
+                            <h3 class="text-xl md:text-2xl font-black text-white group-hover:text-cyan-400 transition-colors uppercase tracking-tight italic pr-4 py-1">
                                 {video.title}
                             </h3>
                         </div>
@@ -54,20 +55,11 @@ const videos = [
 </MainLayout>
 
 <style>
-    /* AZONOS ANIMÁCIÓ A TELJES SZINKRONHOZ */
     .animated-gradient {
-        background: linear-gradient(
-            125deg,
-            #06b6d4,
-            #3b82f6,
-            #10b981,
-            #8b5cf6,
-            #06b6d4
-        );
+        background: linear-gradient(125deg, #06b6d4, #3b82f6, #10b981, #8b5cf6, #06b6d4);
         background-size: 250% 250%;
         animation: glow-flow 8s linear infinite;
     }
-
     @keyframes glow-flow {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }

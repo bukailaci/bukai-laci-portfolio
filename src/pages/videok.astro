@@ -6,14 +6,14 @@ const bands = [
   {
     name: 'Omega Forever Band',
     url: '/videok/omega-forever',
-    desc: '---',
+    desc: 'Bukai Laci - Dobok',
     color: 'from-cyan-500 to-blue-600',
     icon: '🥁'
   },
   {
     name: 'Locomotiv Revival Band',
     url: '/videok/locomotiv-revival',
-    desc: '---',
+    desc: 'Bukai Laci - Dobok',
     color: 'from-emerald-500 to-teal-600',
     icon: '🤘'
   },
@@ -24,22 +24,33 @@ const bands = [
     <div class="max-w-6xl mx-auto px-6 py-12 md:py-20">
         <header class="mb-20 text-center">
             <span class="text-cyan-400 font-mono text-sm tracking-[0.3em] uppercase italic">Válaszd ki a zenekart</span>
-            <h1 class="text-6xl md:text-8xl font-black mt-4 tracking-tighter text-white uppercase italic">
+            {/* JAVÍTÁS: pr-6 és py-2 a dőlt betűk levágása ellen */}
+            <h1 class="text-6xl md:text-8xl font-black mt-4 tracking-tighter text-white uppercase italic pr-6 py-2">
                 VIDEÓK
             </h1>
         </header>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
             {bands.map((band) => (
-                <a href={band.url} class="group relative overflow-hidden rounded-[50px] bg-slate-900/50 border border-white/5 p-1 transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_60px_rgba(6,182,212,0.1)]">
-                    <div class="relative z-10 p-12 md:p-20 flex flex-col items-center text-center h-full justify-center">
-                        <div class="text-5xl mb-6 transform transition-transform duration-500 group-hover:scale-125 group-hover:rotate-12">
-                            {band.icon}
-                        </div>
+                <a href={band.url} class="group relative overflow-hidden rounded-[50px] bg-slate-900/50 border border-white/10 p-12 transition-all duration-500 hover:border-cyan-500/50 hover:-translate-y-4 hover:shadow-[0_20px_50px_rgba(6,182,212,0.15)] flex flex-col items-center text-center">
 
-                        <div class={`w-16 h-1 bg-gradient-to-r ${band.color} mb-8 rounded-full transition-all duration-700 group-hover:w-32`}></div>
+                    {/* ANIMÁLT HÁTTÉR AURA - Ez adja a lüktető fényt hover esetén */}
+                    <div class="absolute inset-8 -z-10 overflow-visible pointer-events-none">
+                        <div class="animated-gradient absolute inset-0 opacity-0 group-hover:opacity-30 blur-[60px] transition-all duration-1000 scale-90 group-hover:scale-125"></div>
+                    </div>
 
-                        <h2 class="text-4xl md:text-5xl font-black text-white mb-4 italic uppercase tracking-tighter transition-all group-hover:text-cyan-400">
+                    {/* Background Tint */}
+                    <div class={`absolute inset-0 bg-gradient-to-br ${band.color} opacity-0 group-hover:opacity-5 transition-opacity duration-700`}></div>
+
+                    {/* Icon/Emoji Wrapper */}
+                    <div class="relative mb-10 text-7xl transform transition-transform duration-700 group-hover:scale-125 group-hover:rotate-12">
+                        {band.icon}
+                        <div class={`absolute inset-0 blur-2xl bg-gradient-to-r ${band.color} opacity-0 group-hover:opacity-40 transition-opacity`}></div>
+                    </div>
+
+                    <div class="relative z-10 flex flex-col items-center">
+                        {/* JAVÍTÁS: pr-6 és py-1 a zenekar név dőlése miatt */}
+                        <h2 class="text-4xl md:text-5xl font-black text-white mb-4 italic uppercase tracking-tighter transition-all group-hover:text-cyan-400 pr-6 py-1">
                             {band.name}
                         </h2>
 
@@ -54,12 +65,30 @@ const bands = [
                             </svg>
                         </div>
                     </div>
-
-                    <div class={`absolute inset-0 bg-gradient-to-br ${band.color} opacity-0 group-hover:opacity-5 transition-opacity duration-700`}></div>
-
-                    <div class={`absolute -bottom-20 -right-20 w-64 h-64 bg-gradient-to-br ${band.color} blur-[100px] opacity-0 group-hover:opacity-20 transition-opacity duration-1000`}></div>
                 </a>
             ))}
         </div>
     </div>
 </MainLayout>
+
+<style>
+    /* Az animált gradiens definíciója */
+    .animated-gradient {
+        background: linear-gradient(
+            125deg,
+            #06b6d4,
+            #3b82f6,
+            #10b981,
+            #8b5cf6,
+            #06b6d4
+        );
+        background-size: 250% 250%;
+        animation: glow-flow 8s linear infinite;
+    }
+
+    @keyframes glow-flow {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+</style>

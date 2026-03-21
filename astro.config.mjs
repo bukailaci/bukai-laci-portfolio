@@ -3,8 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-  // FONTOS: Ide írd be a weboldalad végleges címét!
-  // Enélkül az Astro nem tudja legenerálni a kanonikus URL-eket.
+  // A kanonikus URL-ekhez szükséges
   site: 'https://bukailaci.eu',
 
   output: 'static',
@@ -14,8 +13,9 @@ export default defineConfig({
   },
 
   build: {
-    // Ez biztosítja a Double Commander barát .html kimenetet
-    format: 'file',
+    // EZ A KULCS: 'directory' módban újra mappákat fog gyártani,
+    // pont úgy, ahogy a régi mentésedben volt!
+    format: 'directory',
     assets: 'assets'
   }
 });
