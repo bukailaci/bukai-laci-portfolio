@@ -2,6 +2,7 @@
 // src/layouts/MainLayout.astro
 import Navigation from '../components/Navigation.astro';
 import '../styles/global.css';
+import BackToTop from '../components/BackToTop.astro';
 
 interface Props {
 	title: string;
@@ -22,7 +23,7 @@ const canonicalURL = Astro.site
 	? new URL(Astro.url.pathname, Astro.site)
 	: new URL(Astro.url.pathname, 'http://localhost:4321');
 
-// KÉP ÉS AZONOSÍTÓK - Frissítve a te adataiddal
+// KÉP ÉS AZONOSÍTÓK
 const favicon = "/favicon.svg";
 const ogImage = "/bukai-laci-dobos.png";
 const fbId = "1658830911811102";
@@ -61,6 +62,8 @@ const gaId = "G-SXF3PPJGTV";
 		<meta name="generator" content={Astro.generator} />
 	</head>
 	<body class="bg-slate-950 text-slate-200 selection:bg-cyan-500 selection:text-black">
+		<div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-cyan-500 to-blue-500 z-[300] transition-all duration-150 w-0"></div>
+
 		<Navigation />
 		<main class="pt-20">
 			<slot />
@@ -73,5 +76,26 @@ const gaId = "G-SXF3PPJGTV";
 				</p>
 			</div>
 		</footer>
+
+		<BackToTop />
 	</body>
 </html>
+
+<script>
+	// Olvasottság-jelző csík logikája
+	function setupProgressBar() {
+		const progressBar = document.getElementById('scroll-progress');
+		if (!progressBar) return;
+
+		window.addEventListener('scroll', () => {
+			const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+			const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+			const scrolled = (winScroll / height) * 100;
+			progressBar.style.width = scrolled + "%";
+		});
+	}
+
+	// Inicializálás Astro környezetben
+	setupProgressBar();
+	document.addEventListener('astro:after-swap', setupProgressBar);
+</script>
