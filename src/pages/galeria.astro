@@ -1,131 +1,221 @@
 ---
 // src/pages/galeria.astro
-import MainLayout from '../layouts/MainLayout.astro';
-import { Image } from 'astro:assets';
+import MainLayout from "../layouts/MainLayout.astro";
+import { Image } from "astro:assets";
 
 // AUTOMATIKUS BEOLVASÁS
-const images = Object.values(import.meta.glob('/src/assets/galeria/*.{jpeg,jpg,png,gif}', { eager: true }));
+const images = Object.values(
+  import.meta.glob("/src/assets/galeria/*.{jpeg,jpg,png,gif}", { eager: true }),
+);
 ---
 
 <MainLayout title="Galéria | Bukai Laci">
-    <div class="max-w-7xl mx-auto px-6 py-12 md:py-20">
-        {/* JAVÍTÁS: py-2 és pr-6 hozzáadva, hogy a dőlt 'a' betű ne vágódjon le */}
-        <h1 class="text-5xl md:text-8xl font-black mb-16 tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 uppercase inline-block italic py-2 pr-6">
-            Galéria
-        </h1>
+  <div class="max-w-7xl mx-auto px-6 py-12 md:py-20">
+    {/* JAVÍTÁS: py-2 és pr-6 hozzáadva, hogy a dőlt 'a' betű ne vágódjon le */}
+    <h1
+      class="text-5xl md:text-8xl font-black mb-16 tracking-tighter bg-clip-text text-transparent bg-linear-to-r from-blue-400 via-cyan-400 to-emerald-400 uppercase inline-block italic py-2 pr-6"
+    >
+      Galéria
+    </h1>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {images.map((img: any, index) => (
-                <div
-                    class="gallery-item group relative aspect-square cursor-zoom-in"
-                    data-index={index}
-                    data-src={img.default.src}
-                >
-                    <div class="absolute inset-2 -z-10 overflow-visible pointer-events-none">
-                        <div class="animated-gradient absolute inset-0 opacity-20 group-hover:opacity-70 blur-[40px] transition-all duration-700 scale-90 group-hover:scale-110"></div>
-                    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+      {
+        images.map((img: any, index) => (
+          <div
+            class="gallery-item group relative aspect-square cursor-zoom-in"
+            data-index={index}
+            data-src={img.default.src}
+          >
+            <div class="absolute inset-2 -z-10 overflow-visible pointer-events-none">
+              <div class="animated-gradient absolute inset-0 opacity-20 group-hover:opacity-70 blur-2xl transition-all duration-700 scale-90 group-hover:scale-110" />
+            </div>
 
-                    <div class="relative h-full w-full rounded-[32px] border border-white/20 bg-slate-950/40 backdrop-blur-md overflow-hidden transition-all duration-500 group-hover:border-cyan-500/50 group-hover:-translate-y-2 group-hover:shadow-2xl">
-                        <Image
-                            src={img.default}
-                            alt={`Galéria kép ${index + 1}`}
-                            width={800}
-                            height={800}
-                            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                        />
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                    </div>
-                </div>
-            ))}
-        </div>
+            <div class="relative h-full w-full rounded-4xl border border-white/20 bg-slate-950/40 backdrop-blur-md overflow-hidden transition-all duration-500 group-hover:border-cyan-500/50 group-hover:-translate-y-2 group-hover:shadow-2xl">
+              <Image
+                src={img.default}
+                alt={`Galéria kép ${index + 1}`}
+                width={800}
+                height={800}
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+              />
+              <div class="absolute inset-0 bg-linear-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <div
+    id="lightbox"
+    class="fixed inset-0 z-100 hidden bg-slate-950/95 backdrop-blur-xl transition-opacity duration-500 opacity-0 items-center justify-center p-4 md:p-10 cursor-zoom-out"
+  >
+    <button
+      id="prev-btn"
+      class="absolute left-4 md:left-10 text-white/50 hover:text-cyan-400 transition-colors z-10 p-4"
+      aria-label="Előző kép"
+    >
+      <svg
+        class="w-10 h-10 md:w-16 md:h-16"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        ><path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M15 19l-7-7 7-7"></path></svg
+      >
+    </button>
+
+    <div class="relative max-w-5xl max-h-full flex flex-col items-center">
+      <img
+        id="lightbox-img"
+        src=""
+        alt="Galéria nagyított képe"
+        class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl border border-white/10 object-contain transition-all duration-300 transform scale-95"
+      />
+      <p
+        id="image-counter"
+        class="text-slate-500 font-mono text-sm mt-6 uppercase tracking-[0.3em]"
+      >
+      </p>
     </div>
 
-    <div id="lightbox" class="fixed inset-0 z-[100] hidden bg-slate-950/95 backdrop-blur-xl transition-opacity duration-500 opacity-0 flex items-center justify-center p-4 md:p-10 cursor-zoom-out">
-        <button id="prev-btn" class="absolute left-4 md:left-10 text-white/50 hover:text-cyan-400 transition-colors z-10 p-4">
-            <svg class="w-10 h-10 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/></svg>
-        </button>
+    <button
+      id="next-btn"
+      class="absolute right-4 md:right-10 text-white/50 hover:text-cyan-400 transition-colors z-10 p-4"
+      aria-label="Következő kép"
+    >
+      <svg
+        class="w-10 h-10 md:w-16 md:h-16"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+        ><path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="1.5"
+          d="M9 5l7 7-7 7"></path></svg
+      >
+    </button>
 
-        <div class="relative max-w-5xl max-h-full flex flex-col items-center">
-            <img id="lightbox-img" src="" alt="" class="max-w-full max-h-[85vh] rounded-2xl shadow-2xl border border-white/10 object-contain transition-all duration-300 transform scale-95">
-            <p id="image-counter" class="text-slate-500 font-mono text-sm mt-6 uppercase tracking-[0.3em]"></p>
-        </div>
-
-        <button id="next-btn" class="absolute right-4 md:right-10 text-white/50 hover:text-cyan-400 transition-colors z-10 p-4">
-            <svg class="w-10 h-10 md:w-16 md:h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/></svg>
-        </button>
-
-        <button id="close-btn" class="absolute top-6 right-6 text-white/50 hover:text-red-400 transition-colors p-2">
-            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
-        </button>
-    </div>
+    <button
+      id="close-btn"
+      class="absolute top-6 right-6 text-white/50 hover:text-red-400 transition-colors p-2"
+      aria-label="Szűkítés bezárása"
+    >
+      <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+        ><path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M6 18L18 6M6 6l12 12"></path></svg
+      >
+    </button>
+  </div>
 </MainLayout>
 
 <style>
-    .animated-gradient {
-        background: linear-gradient(125deg, #06b6d4, #3b82f6, #10b981, #8b5cf6, #06b6d4);
-        background-size: 250% 250%;
-        animation: glow-flow 8s linear infinite;
+  .animated-gradient {
+    background: linear-gradient(
+      125deg,
+      #06b6d4,
+      #3b82f6,
+      #10b981,
+      #8b5cf6,
+      #06b6d4
+    );
+    background-size: 250% 250%;
+    animation: glow-flow 8s linear infinite;
+  }
+  @keyframes glow-flow {
+    0% {
+      background-position: 0% 50%;
     }
-    @keyframes glow-flow {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+    50% {
+      background-position: 100% 50%;
     }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 </style>
 
 <script>
-    function setupGallery() {
-        const items = document.querySelectorAll('.gallery-item');
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement;
-        const counter = document.getElementById('image-counter');
-        const closeBtn = document.getElementById('close-btn');
-        const nextBtn = document.getElementById('next-btn');
-        const prevBtn = document.getElementById('prev-btn');
+  function setupGallery() {
+    const items = document.querySelectorAll(".gallery-item");
+    const lightbox = document.getElementById("lightbox");
+    const lightboxImg = document.getElementById(
+      "lightbox-img",
+    ) as HTMLImageElement;
+    const counter = document.getElementById("image-counter");
+    const closeBtn = document.getElementById("close-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const prevBtn = document.getElementById("prev-btn");
 
-        if (!lightbox || !lightboxImg || !counter) return;
+    if (!lightbox || !lightboxImg || !counter) return;
 
-        let currentIndex = 0;
-        const imagesData = Array.from(items).map(item => (item as HTMLElement).dataset.src);
+    let currentIndex = 0;
+    const imagesData = Array.from(items).map(
+      (item) => (item as HTMLElement).dataset.src,
+    );
 
-        const updateImage = (index: number) => {
-            lightboxImg.classList.add('scale-95', 'opacity-0');
-            setTimeout(() => {
-                lightboxImg.src = imagesData[index] || '';
-                counter.textContent = `${index + 1} / ${imagesData.length}`;
-                lightboxImg.classList.remove('scale-95', 'opacity-0');
-            }, 200);
-            currentIndex = index;
-        };
+    const updateImage = (index: number) => {
+      lightboxImg.classList.add("scale-95", "opacity-0");
+      setTimeout(() => {
+        lightboxImg.src = imagesData[index] || "";
+        counter.textContent = `${index + 1} / ${imagesData.length}`;
+        lightboxImg.classList.remove("scale-95", "opacity-0");
+      }, 200);
+      currentIndex = index;
+    };
 
-        items.forEach((item, index) => {
-            (item as HTMLElement).onclick = () => {
-                updateImage(index);
-                lightbox.classList.remove('hidden');
-                setTimeout(() => lightbox.classList.add('opacity-100'), 10);
-            };
-        });
+    items.forEach((item, index) => {
+      (item as HTMLElement).onclick = () => {
+        updateImage(index);
+        lightbox.classList.remove("hidden");
+        lightbox.classList.add("flex");
+        setTimeout(() => lightbox.classList.add("opacity-100"), 10);
+      };
+    });
 
-        const showNext = () => { currentIndex = (currentIndex + 1) % imagesData.length; updateImage(currentIndex); };
-        const showPrev = () => { currentIndex = (currentIndex - 1 + imagesData.length) % imagesData.length; updateImage(currentIndex); };
-        const closeLightbox = () => {
-            lightbox.classList.remove('opacity-100');
-            setTimeout(() => lightbox.classList.add('hidden'), 500);
-        };
+    const showNext = () => {
+      currentIndex = (currentIndex + 1) % imagesData.length;
+      updateImage(currentIndex);
+    };
+    const showPrev = () => {
+      currentIndex = (currentIndex - 1 + imagesData.length) % imagesData.length;
+      updateImage(currentIndex);
+    };
+    const closeLightbox = () => {
+      lightbox.classList.remove("opacity-100", "flex");
+      setTimeout(() => lightbox.classList.add("hidden"), 500);
+    };
 
-        if (nextBtn) nextBtn.onclick = (e) => { e.stopPropagation(); showNext(); };
-        if (prevBtn) prevBtn.onclick = (e) => { e.stopPropagation(); showPrev(); };
-        if (closeBtn) closeBtn.onclick = closeLightbox;
-        lightbox.onclick = (e) => { if (e.target === lightbox) closeLightbox(); };
+    if (nextBtn)
+      nextBtn.onclick = (e) => {
+        e.stopPropagation();
+        showNext();
+      };
+    if (prevBtn)
+      prevBtn.onclick = (e) => {
+        e.stopPropagation();
+        showPrev();
+      };
+    if (closeBtn) closeBtn.onclick = closeLightbox;
+    lightbox.onclick = (e) => {
+      if (e.target === lightbox) closeLightbox();
+    };
 
-        window.onkeydown = (e) => {
-            if (lightbox.classList.contains('hidden')) return;
-            if (e.key === 'ArrowRight') showNext();
-            if (e.key === 'ArrowLeft') showPrev();
-            if (e.key === 'Escape') closeLightbox();
-        };
-    }
+    window.onkeydown = (e) => {
+      if (lightbox.classList.contains("hidden")) return;
+      if (e.key === "ArrowRight") showNext();
+      if (e.key === "ArrowLeft") showPrev();
+      if (e.key === "Escape") closeLightbox();
+    };
+  }
 
-    setupGallery();
-    document.addEventListener('astro:after-swap', setupGallery);
+  setupGallery();
+  document.addEventListener("astro:after-swap", setupGallery);
 </script>

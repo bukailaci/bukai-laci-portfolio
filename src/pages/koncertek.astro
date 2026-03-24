@@ -1,94 +1,145 @@
 ---
 // src/pages/koncertek.astro
-import MainLayout from '../layouts/MainLayout.astro';
-import { concerts } from '../data/concerts.js';
+import MainLayout from "../layouts/MainLayout.astro";
+import { concerts } from "../data/concerts.js";
 
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 
 const upcomingConcerts = concerts
-  .filter(c => new Date(c.isoDate) >= today)
+  .filter((c) => new Date(c.isoDate) >= today)
   .sort((a, b) => a.isoDate.localeCompare(b.isoDate));
 
-const monthNames = ["Január", "Február", "Március", "Április", "Május", "Június", "Július", "Augusztus", "Szeptember", "Október", "November", "December"];
+const monthNames = [
+  "Január",
+  "Február",
+  "Március",
+  "Április",
+  "Május",
+  "Június",
+  "Július",
+  "Augusztus",
+  "Szeptember",
+  "Október",
+  "November",
+  "December",
+];
 ---
 
 <MainLayout title="Koncertek | Bukai Laci">
-    <section class="max-w-7xl mx-auto px-6 py-12 md:py-20">
-        <header class="mb-16">
-            <span class="text-cyan-400 font-mono text-sm tracking-[0.3em] uppercase block mb-4">Tour Dates</span>
-            <h1 class="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-cyan-400 to-emerald-400 uppercase inline-block italic py-2 pr-4">
-                Koncertek
-            </h1>
-        </header>
+  <section class="max-w-7xl mx-auto px-6 py-12 md:py-20">
+    <header class="mb-16">
+      <span
+        class="text-cyan-400 font-mono text-sm tracking-[0.3em] uppercase block mb-4"
+        >Tour Dates</span
+      >
+      <h1
+        class="text-5xl md:text-8xl font-black tracking-tighter bg-clip-text text-transparent bg-linear-to-r from-blue-400 via-cyan-400 to-emerald-400 uppercase inline-block italic py-2 pr-4"
+      >
+        Koncertek
+      </h1>
+    </header>
 
-        <div class="grid grid-cols-1 gap-12 max-w-5xl">
-            {upcomingConcerts.length > 0 ? (
-                upcomingConcerts.map((c) => {
-                    const d = new Date(c.isoDate);
-                    const year = d.getFullYear();
-                    const day = d.getDate();
-                    const month = monthNames[d.getMonth()];
+    <div class="grid grid-cols-1 gap-12 max-w-5xl">
+      {
+        upcomingConcerts.length > 0 ? (
+          upcomingConcerts.map((c) => {
+            const d = new Date(c.isoDate);
+            const year = d.getFullYear();
+            const day = d.getDate();
+            const month = monthNames[d.getMonth()];
 
-                    const id = `${c.isoDate}-${c.venue.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')}`;
-                    const facebookShareLink = `https://www.facebook.com/sharer/sharer.php?u=https://www.bukailaci.eu/koncert/${id}`;
+            const id = `${c.isoDate}-${c.venue
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .replace(/[^a-z0-9]/g, "-")
+              .replace(/-+/g, "-")
+              .replace(/^-|-$/g, "")}`;
+            const facebookShareLink = `https://www.facebook.com/sharer/sharer.php?u=https://www.bukailaci.eu/koncert/${id}`;
 
-                    return (
-                        <div class="group relative">
-                            <div class="absolute inset-2 -z-10 overflow-visible pointer-events-none">
-                                <div class="animated-gradient absolute inset-0 opacity-20 group-hover:opacity-60 blur-[40px] transition-all duration-700 scale-95 group-hover:scale-105"></div>
-                            </div>
-
-                            <div class="relative p-8 md:p-10 rounded-[32px] border border-white/20 bg-slate-950/40 backdrop-blur-md transition-all duration-500 group-hover:border-cyan-500/50 group-hover:-translate-y-2 shadow-2xl overflow-hidden">
-                                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-                                    <div class="flex-grow">
-                                        <div class="flex flex-col gap-2 mb-6">
-                                            <span class="text-2xl md:text-4xl font-black text-cyan-400 font-mono tracking-tighter leading-none">
-                                                {year}. {month} {day}.
-                                            </span>
-                                            <div class="flex items-center gap-2 px-3 py-1 rounded-lg bg-white/5 border border-white/10 w-fit">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse"></span>
-                                                <span class="text-xs font-mono text-slate-300 font-bold uppercase tracking-widest">{c.time}</span>
-                                            </div>
-                                        </div>
-                                        <h3 class="text-3xl md:text-5xl font-black text-white group-hover:text-cyan-400 transition-colors uppercase tracking-tight mb-3 italic leading-tight">
-                                            {c.band}
-                                        </h3>
-                                        <p class="text-lg md:text-2xl text-slate-400 font-light italic">
-                                            {c.venue}
-                                        </p>
-                                    </div>
-                                    <div class="shrink-0">
-                                        <a href={facebookShareLink} target="_blank" rel="noopener noreferrer" class="flex items-center justify-center gap-3 px-10 py-4 bg-[#1877F2] hover:bg-[#145db2] text-white rounded-2xl transition-all duration-300 font-bold text-xs uppercase tracking-widest shadow-lg group/fb whitespace-nowrap">
-                                            <svg class="w-5 h-5 fill-currentColor" viewBox="0 0 24 24">
-                                                <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z"/>
-                                            </svg>
-                                            Megosztás
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    );
-                })
-            ) : (
-                <div class="p-16 rounded-[40px] border border-white/10 bg-slate-950/20 text-center backdrop-blur-md">
-                    <p class="text-slate-500 font-mono uppercase tracking-[0.4em] text-sm">Jelenleg nincsenek publikus dátumok.</p>
+            return (
+              <div class="group relative">
+                <div class="absolute inset-2 -z-10 overflow-visible pointer-events-none">
+                  <div class="animated-gradient absolute inset-0 opacity-20 group-hover:opacity-60 blur-2xl transition-all duration-700 scale-95 group-hover:scale-105" />
                 </div>
-            )}
-        </div>
-    </section>
+
+                <div class="relative p-8 md:p-10 rounded-4xl border border-white/20 bg-slate-950/40 backdrop-blur-md transition-all duration-500 group-hover:border-cyan-500/50 group-hover:-translate-y-2 shadow-2xl overflow-hidden">
+                  <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
+                    <div class="grow">
+                      <div class="flex flex-col gap-2 mb-6">
+                        <span class="text-2xl md:text-4xl font-black text-cyan-400 font-mono tracking-tighter leading-none">
+                          {year}. {month} {day}.
+                        </span>
+                        <div class="flex items-center gap-2 px-3 py-1 rounded-lg bg-white/5 border border-white/10 w-fit">
+                          <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                          <span class="text-xs font-mono text-slate-300 font-bold uppercase tracking-widest">
+                            {c.time}
+                          </span>
+                        </div>
+                      </div>
+                      <h3 class="text-3xl md:text-5xl font-black text-white group-hover:text-cyan-400 transition-colors uppercase tracking-tight mb-3 italic leading-tight">
+                        {c.band}
+                      </h3>
+                      <p class="text-lg md:text-2xl text-slate-400 font-light italic">
+                        {c.venue}
+                      </p>
+                    </div>
+                    <div class="shrink-0">
+                      <a
+                        href={facebookShareLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex items-center justify-center gap-3 px-10 py-4 bg-[#1877F2] hover:bg-[#145db2] text-white rounded-2xl transition-all duration-300 font-bold text-xs uppercase tracking-widest shadow-lg group/fb whitespace-nowrap"
+                      >
+                        <svg
+                          class="w-5 h-5 fill-currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M9 8h-3v4h3v12h5v-12h3.642l.358-4h-4v-1.667c0-.955.192-1.333 1.115-1.333h2.885v-5h-3.808c-3.596 0-5.192 1.583-5.192 4.615v3.385z" />
+                        </svg>
+                        Megosztás
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })
+        ) : (
+          <div class="p-16 rounded-[40px] border border-white/10 bg-slate-950/20 text-center backdrop-blur-md">
+            <p class="text-slate-500 font-mono uppercase tracking-[0.4em] text-sm">
+              Jelenleg nincsenek publikus dátumok.
+            </p>
+          </div>
+        )
+      }
+    </div>
+  </section>
 </MainLayout>
 
 <style>
-    .animated-gradient {
-        background: linear-gradient(125deg, #06b6d4, #3b82f6, #10b981, #8b5cf6, #06b6d4);
-        background-size: 250% 250%;
-        animation: glow-flow 8s linear infinite;
+  .animated-gradient {
+    background: linear-gradient(
+      125deg,
+      #06b6d4,
+      #3b82f6,
+      #10b981,
+      #8b5cf6,
+      #06b6d4
+    );
+    background-size: 250% 250%;
+    animation: glow-flow 8s linear infinite;
+  }
+  @keyframes glow-flow {
+    0% {
+      background-position: 0% 50%;
     }
-    @keyframes glow-flow {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+    50% {
+      background-position: 100% 50%;
     }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
 </style>

@@ -1,6 +1,10 @@
 import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 
+import mdx from '@astrojs/mdx';
+
+import sitemap from '@astrojs/sitemap';
+
 // https://astro.build/config
 export default defineConfig({
   // A kanonikus URL-ekhez szükséges
@@ -17,5 +21,7 @@ export default defineConfig({
     // pont úgy, ahogy a régi mentésedben volt!
     format: 'directory',
     assets: 'assets'
-  }
+  },
+
+  integrations: [mdx(), sitemap()]
 });
