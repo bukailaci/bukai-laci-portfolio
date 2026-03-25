@@ -119,12 +119,19 @@ const aiImages = Object.values(
           d="M9 5l7 7-7 7"></path>
       </svg>
     </button>
-    <img
-      id="lightbox-img"
-      src=""
-      alt="Nagyítás"
-      class="max-w-full max-h-[90vh] rounded-3xl shadow-2xl transition-all duration-500 scale-90 object-contain"
-    />
+    <div class="relative max-w-5xl max-h-full flex flex-col items-center">
+      <img
+        id="lightbox-img"
+        src=""
+        alt="Nagyítás"
+        class="max-w-full max-h-[90vh] rounded-3xl shadow-2xl transition-all duration-500 scale-90 object-contain"
+      />
+      <p
+        id="image-counter"
+        class="text-slate-500 font-mono text-sm mt-6 uppercase tracking-[0.3em]"
+      >
+      </p>
+    </div>
   </div>
 </MainLayout>
 
@@ -134,6 +141,7 @@ const aiImages = Object.values(
     const lightboxImg = document.getElementById(
       "lightbox-img",
     ) as HTMLImageElement;
+    const counter = document.getElementById("image-counter");
     const closeBtn = document.getElementById("close-lightbox");
     const prevBtn = document.getElementById("prev-btn");
     const nextBtn = document.getElementById("next-btn");
@@ -145,12 +153,13 @@ const aiImages = Object.values(
     );
 
     const updateImage = (index: number) => {
-      if (!lightbox || !lightboxImg || !imagesData[index]) return;
+      if (!lightbox || !lightboxImg || !counter || !imagesData[index]) return;
       lightbox.classList.add("flex");
       lightboxImg.style.opacity = "0";
       setTimeout(() => {
         lightboxImg.src = imagesData[index]!;
         lightboxImg.style.opacity = "1";
+        counter.textContent = `${index + 1} / ${imagesData.length}`;
       }, 200);
       currentIndex = index;
     };
