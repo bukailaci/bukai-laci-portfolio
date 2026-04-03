@@ -3,6 +3,7 @@
 import Navigation from "../components/Navigation.astro";
 import "../styles/global.css";
 import BackToTop from "../components/BackToTop.astro";
+import Stars from "../components/Stars.astro";
 
 interface Props {
   title: string;
@@ -14,16 +15,13 @@ const {
   description = "Bukai Laci dobos portfóliója. Omega Forever Band és Locomotiv Revival Band koncertvideók, galéria és kapcsolat.",
 } = Astro.props;
 
-// --- DINAMIKUS CÍM ÉS URL KEZELÉSE ---
 const urlParams = Astro.url.searchParams;
 const dynamicTitle = urlParams.get("t") || title;
 
-// JAVÍTÁS: Biztonságos URL generálás Astro 6.0-hoz
 const canonicalURL = Astro.site
   ? new URL(Astro.url.pathname, Astro.site)
   : new URL(Astro.url.pathname, "http://localhost:4321");
 
-// KÉP ÉS AZONOSÍTÓK
 const favicon = "/favicon.svg";
 const ogImage = "/bukai-laci-dobos.png";
 const fbId = "1658830911811102";
@@ -35,24 +33,17 @@ const gaId = "G-SXF3PPJGTV";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-
-    <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-    ></script>
+    <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
     <script is:inline define:vars={{ gaId }}>
       window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
+      function gtag() { dataLayer.push(arguments); }
       gtag("js", new Date());
       gtag("config", gaId);
     </script>
-
     <title>{dynamicTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalURL} />
-
     <link rel="icon" type="image/svg+xml" href={favicon} />
-
     <meta property="og:type" content="website" />
     <meta property="og:url" content={Astro.url} />
     <meta property="og:title" content={dynamicTitle} />
@@ -61,53 +52,41 @@ const gaId = "G-SXF3PPJGTV";
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="fb:app_id" content={fbId} />
-
     <meta name="generator" content={Astro.generator} />
   </head>
-  <body
-    class="bg-slate-950 text-slate-200 selection:bg-cyan-500 selection:text-black"
-  >
-    <div
-      id="scroll-progress"
-      class="fixed top-0 left-0 h-1 bg-linear-to-r from-cyan-500 to-blue-500 z-[300] transition-all duration-150 w-0"
-    >
-    </div>
+  <body class="bg-[#020617] text-slate-200 selection:bg-cyan-500 selection:text-black min-h-screen">
+    <div id="scroll-progress" class="fixed top-0 left-0 h-1 bg-linear-to-r from-cyan-500 to-blue-500 z-[300] transition-all duration-150 w-0"></div>
 
+    <Stars />
     <Navigation />
-    <main class="pt-20">
+
+    {/* JAVÍTÁS: Kivettem a z-10-et, hogy a fotónézegető z-indexe érvényesülhessen a menü felett */}
+    <main class="pt-20 relative">
       <slot />
     </main>
 
-    <footer class="border-t border-white/5 py-12 mt-24">
+    <footer class="border-t border-white/5 py-12 mt-24 relative z-10">
       <div class="max-w-7xl mx-auto px-6 text-center">
         <p class="text-slate-500 text-sm font-medium uppercase tracking-widest">
           &copy; {new Date().getFullYear()} Bukai Laci. Minden jog fenntartva.
         </p>
       </div>
     </footer>
-
     <BackToTop />
   </body>
 </html>
 
 <script>
-  // Olvasottság-jelző csík logikája
   function setupProgressBar() {
     const progressBar = document.getElementById("scroll-progress");
     if (!progressBar) return;
-
     window.addEventListener("scroll", () => {
-      const winScroll =
-        document.body.scrollTop || document.documentElement.scrollTop;
-      const height =
-        document.documentElement.scrollHeight -
-        document.documentElement.clientHeight;
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const scrolled = (winScroll / height) * 100;
       progressBar.style.width = scrolled + "%";
     });
   }
-
-  // Inicializálás Astro környezetben
   setupProgressBar();
   document.addEventListener("astro:after-swap", setupProgressBar);
 </script>

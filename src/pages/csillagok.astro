@@ -1,0 +1,92 @@
+---
+// src/pages/csillagok.astro
+import MainLayout from "../layouts/MainLayout.astro";
+---
+
+<MainLayout title="Csillagrendszer Vezérlő | Bukai Laci">
+  <div class="relative w-full h-[100dvh] overflow-hidden pointer-events-none">
+
+    {/* KISEBB VEZÉRLŐPULT A BAL ALSÓ SAROKBAN */}
+    <div class="fixed bottom-6 left-6 z-50 bg-slate-900/80 backdrop-blur-2xl p-5 rounded-3xl border border-white/10 shadow-2xl flex flex-col gap-4 w-64 pointer-events-auto">
+
+      <div class="flex items-center justify-between">
+        <h2 class="text-cyan-400 font-mono text-[9px] uppercase tracking-[0.2em]">Galaxis vezérlő</h2>
+        <div class="text-[10px] text-white/40 font-mono"><span id="currentStarCount">200</span> pont</div>
+      </div>
+
+      {/* Sűrűség csúszka */}
+      <div class="w-full">
+        <input
+          type="range"
+          id="interactiveStarSlider"
+          min="50"
+          max="600"
+          value="200"
+          class="w-full h-1 bg-white/10 rounded-full appearance-none cursor-pointer accent-cyan-400"
+        />
+      </div>
+
+      {/* Színválasztó */}
+      <div class="flex items-center justify-between gap-3 pt-2 border-t border-white/5">
+        <span class="text-[9px] text-slate-400 uppercase tracking-widest">Pókháló színe:</span>
+        <input
+          type="color"
+          id="starColorPicker"
+          value="#22d3ee"
+          class="w-10 h-6 bg-transparent border-none cursor-pointer p-0"
+        />
+      </div>
+
+      <a href="/" class="text-center py-2 bg-white/5 hover:bg-white/10 text-[9px] text-white/50 hover:text-white uppercase tracking-[0.3em] rounded-xl transition-all border border-white/5">
+        Vissza a főoldalra
+      </a>
+    </div>
+  </div>
+</MainLayout>
+
+<script>
+  function initInteractiveStars() {
+    const slider = document.getElementById("interactiveStarSlider") as HTMLInputElement;
+    const colorPicker = document.getElementById("starColorPicker") as HTMLInputElement;
+    const countDisplay = document.getElementById("currentStarCount");
+
+    if (!slider || !colorPicker || !countDisplay) return;
+
+    const updateBackground = () => {
+      const count = parseInt(slider.value);
+      const color = colorPicker.value;
+      countDisplay.textContent = count.toString();
+
+      // Elküldjük a beállításokat a Stars.astro-nak
+      window.dispatchEvent(new CustomEvent('updateStarConfig', {
+        detail: { count: count, color: color }
+      }));
+    };
+
+    slider.addEventListener('input', updateBackground);
+    colorPicker.addEventListener('input', updateBackground);
+  }
+
+  document.addEventListener('astro:page-load', initInteractiveStars);
+  initInteractiveStars();
+</script>
+
+<style>
+  /* Csúszka gomb finomítása */
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #22d3ee;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid white;
+  }
+
+  /* Színválasztó karika stílusa */
+  input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+  input[type="color"]::-webkit-color-swatch {
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+  }
+</style>

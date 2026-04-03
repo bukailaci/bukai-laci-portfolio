@@ -6,33 +6,23 @@ import heroImage from "../assets/ai-hero.jpg";
 ---
 
 <MainLayout title="Főoldal | Bukai Laci">
-  <section class="w-full relative overflow-hidden bg-slate-950">
+  <section class="w-full relative overflow-hidden bg-transparent">
     <div class="max-w-7xl mx-auto px-6 py-10 md:py-20 lg:py-32 relative">
-      <div
-        class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center"
-      >
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
         <div class="text-center lg:text-left order-2 lg:order-1 relative z-10">
-          <span
-            class="text-cyan-400 font-mono tracking-[0.3em] uppercase text-xs md:text-sm lg:text-base"
-            >Üdvözöllek a jövőben</span
-          >
-          <div class="w-full">
-            <h1
-              class="text-5xl md:text-7xl lg:text-5xl xl:text-7xl 2xl:text-8xl font-black py-4 md:py-6 leading-tight bg-clip-text text-transparent bg-linear-to-r from-blue-400 via-cyan-400 to-emerald-400 inline-block w-full tracking-tighter"
-            >
+          <span class="text-cyan-400 font-mono tracking-[0.3em] uppercase text-xs md:text-sm lg:text-base">Üdvözöllek a jövőben</span>
+
+          <div class="w-full pt-8 pb-4 md:pt-10 md:pb-6 flex justify-center lg:justify-start overflow-visible">
+            <h1 class="welcome-text font-black tracking-tighter select-none">
               Üdvözöllek!
             </h1>
           </div>
-          <p
-            class="text-lg md:text-xl lg:text-lg xl:text-2xl text-slate-400 mt-4 md:mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light"
-          >
+
+          <p class="text-lg md:text-xl lg:text-lg xl:text-2xl text-slate-400 mt-4 md:mt-6 max-w-xl mx-auto lg:mx-0 leading-relaxed font-light">
             Ez az új, modern otthonom a weben.
           </p>
 
-          {/* GYORSMENÜ: Most már 100% szinkronban a navigációval */}
-          <div
-            class="mt-8 md:mt-10 grid grid-cols-2 sm:flex sm:flex-wrap gap-4 sm:gap-5 justify-center lg:justify-start"
-          >
+          <div class="mt-8 md:mt-10 grid grid-cols-2 sm:flex sm:flex-wrap gap-4 sm:gap-5 justify-center lg:justify-start">
             {
               [
                 { name: "Galéria", url: "/galeria" },
@@ -47,7 +37,6 @@ import heroImage from "../assets/ai-hero.jpg";
                   <div class="absolute inset-0 -z-10 rounded-2xl overflow-hidden pointer-events-none">
                     <div class="animated-gradient absolute inset-0 opacity-50" />
                   </div>
-
                   <span class="relative z-10 group-hover:text-cyan-400 transition-colors">
                     {btn.name}
                   </span>
@@ -57,27 +46,11 @@ import heroImage from "../assets/ai-hero.jpg";
           </div>
         </div>
 
-        <div
-          class="relative group mx-auto lg:mx-0 w-full max-w-[320px] md:max-w-md lg:max-w-none order-1 lg:order-2"
-        >
-          <div
-            class="absolute inset-10 bg-black/60 blur-[100px] z-0 pointer-events-none"
-          >
-          </div>
-
-          {/* Fotó keret: Ez is megkapta a szinkronizált stílust */}
-          <div
-            class="relative rounded-[45px] border border-white/25 bg-slate-950/20 backdrop-blur-2xl overflow-hidden shadow-[0_35px_60px_-15px_rgba(0,0,0,0.9)] transition-all duration-700 group-hover:scale-[1.02] z-10"
-          >
-            <Image
-              src={heroImage}
-              alt="Bukai Laci"
-              class="w-full h-auto transition-transform duration-1000 group-hover:scale-110"
-            />
-            <div
-              class="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.5)] pointer-events-none"
-            >
-            </div>
+        <div class="relative group mx-auto lg:mx-0 w-full max-w-[320px] md:max-w-md lg:max-w-none order-1 lg:order-2">
+          <div class="absolute inset-10 bg-black/60 blur-[100px] z-0 pointer-events-none"></div>
+          <div class="relative rounded-[45px] border border-white/25 bg-slate-950/20 backdrop-blur-2xl overflow-hidden shadow-[0_35px_60px_-15px_rgba(0,0,0,0.9)] transition-all duration-700 group-hover:scale-[1.02] z-10">
+            <Image src={heroImage} alt="Bukai Laci" class="w-full h-auto transition-transform duration-1000 group-hover:scale-110" />
+            <div class="absolute inset-0 shadow-[inset_0_0_60px_rgba(0,0,0,0.5)] pointer-events-none"></div>
           </div>
         </div>
       </div>
@@ -86,34 +59,46 @@ import heroImage from "../assets/ai-hero.jpg";
 </MainLayout>
 
 <style>
-  /* AZONOS ANIMÁCIÓS ÉRTÉKEK A TELJES SZINKRONHOZ */
+  .welcome-text {
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    line-height: 1.3;
+    background: linear-gradient(to right, #60a5fa, #22d3ee, #34d399);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+
+    /* Nagyon lassú, 7 másodperces úszás a maximális nyugalomért */
+    animation: analog-glow-breathe 7s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    will-change: transform, filter;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+
+  @keyframes analog-glow-breathe {
+    0%, 100% {
+      transform: scale(0.85) translateZ(0);
+      /* Nem 0-ról indulunk, hanem egy minimális derengésről, hogy ne "kapcsoljon ki" a motor */
+      filter: brightness(0.85) blur(0.3px) drop-shadow(0 0 3px rgba(34, 211, 238, 0.1));
+      opacity: 0.85;
+    }
+    50% {
+      transform: scale(1.12) translateZ(0);
+      /* Itt érjük el a csúcsot */
+      filter: brightness(1.15) blur(0px) drop-shadow(0 0 30px rgba(34, 211, 238, 0.5));
+      opacity: 1;
+    }
+  }
+
   .animated-gradient {
-    background: linear-gradient(
-      125deg,
-      #06b6d4,
-      #3b82f6,
-      #10b981,
-      #8b5cf6,
-      #06b6d4
-    );
+    background: linear-gradient(125deg, #06b6d4, #3b82f6, #10b981, #8b5cf6, #06b6d4);
     background-size: 250% 250%;
     filter: blur(40px);
     animation: glow-flow 8s linear infinite;
   }
 
   @keyframes glow-flow {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  :global(body) {
-    background-color: #020617;
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
   }
 </style>

@@ -3,7 +3,7 @@
 import MainLayout from "../layouts/MainLayout.astro";
 import { Image } from "astro:assets";
 
-// AI képek automatikus beolvasása az új, modern módszerrel
+// AI képek automatikus beolvasása
 const aiImages = Object.values(
   import.meta.glob("/src/assets/ai-kepek/*.{jpeg,jpg,png,gif,webp}", {
     eager: true,
@@ -11,7 +11,7 @@ const aiImages = Object.values(
 );
 ---
 
-<MainLayout title="AI Generált Képek | Modern Galéria">
+<MainLayout title="AI Generált Képek | Bukai Laci">
   <div class="max-w-6xl mx-auto px-6 py-12 md:py-20">
     <header class="mb-16">
       <span class="text-cyan-400 font-mono text-sm tracking-[0.3em] uppercase"
@@ -58,67 +58,44 @@ const aiImages = Object.values(
     </div>
   </div>
 
+  {/* LIGHTBOX: Itt is beállítottuk a z-[500]-as szintet */}
   <div
     id="lightbox"
-    class="fixed inset-0 z-300 hidden bg-slate-950/95 backdrop-blur-2xl items-center justify-center p-4 md:p-10 transition-opacity duration-300 opacity-0"
+    class="fixed inset-0 z-[500] hidden bg-slate-950/95 backdrop-blur-2xl items-center justify-center p-4 md:p-10 transition-opacity duration-300 opacity-0"
   >
+    {/* BEZÁRÁS GOMB */}
     <button
-      id="close-lightbox"
-      class="absolute top-8 right-8 z-310 text-white/50 hover:text-white transition-colors"
+      id="close-btn"
+      class="absolute top-8 right-8 z-[510] text-white/50 hover:text-white transition-colors p-2"
       aria-label="Bezárás"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-10 w-10"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M6 18L18 6M6 6l12 12"></path>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
+
+    {/* ELŐZŐ GOMB */}
     <button
       id="prev-btn"
-      class="absolute left-4 md:left-10 z-310 text-white/30 hover:text-white transition-all p-4 bg-white/5 rounded-full border border-white/10"
+      class="absolute left-4 md:left-10 z-[510] text-white/30 hover:text-white transition-all p-4 bg-white/5 rounded-full border border-white/10 hover:bg-white/10"
       aria-label="Előző kép"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-8 w-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M15 19l-7-7 7-7"></path>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
       </svg>
     </button>
+
+    {/* KÖVETKEZŐ GOMB */}
     <button
       id="next-btn"
-      class="absolute right-4 md:right-10 z-310 text-white/30 hover:text-white transition-all p-4 bg-white/5 rounded-full border border-white/10"
+      class="absolute right-4 md:right-10 z-[510] text-white/30 hover:text-white transition-all p-4 bg-white/5 rounded-full border border-white/10 hover:bg-white/10"
       aria-label="Következő kép"
     >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="h-8 w-8"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="2"
-          d="M9 5l7 7-7 7"></path>
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
       </svg>
     </button>
+
     <div class="relative max-w-5xl max-h-full flex flex-col items-center">
       <img
         id="lightbox-img"
@@ -129,8 +106,7 @@ const aiImages = Object.values(
       <p
         id="image-counter"
         class="text-slate-500 font-mono text-sm mt-6 uppercase tracking-[0.3em]"
-      >
-      </p>
+      ></p>
     </div>
   </div>
 </MainLayout>
@@ -138,80 +114,81 @@ const aiImages = Object.values(
 <script>
   function setupAiGallery() {
     const lightbox = document.getElementById("lightbox");
-    const lightboxImg = document.getElementById(
-      "lightbox-img",
-    ) as HTMLImageElement;
+    const lightboxImg = document.getElementById("lightbox-img") as HTMLImageElement;
     const counter = document.getElementById("image-counter");
-    const closeBtn = document.getElementById("close-lightbox");
+    const closeBtn = document.getElementById("close-btn");
     const prevBtn = document.getElementById("prev-btn");
     const nextBtn = document.getElementById("next-btn");
     const items = document.querySelectorAll(".ai-gallery-item");
 
+    if (!lightbox || !lightboxImg || !counter) return;
+
     let currentIndex = 0;
-    const imagesData = Array.from(items).map((item) =>
-      item.getAttribute("data-src"),
-    );
+    const imagesData = Array.from(items).map((item) => (item as HTMLElement).dataset.src);
 
     const updateImage = (index: number) => {
-      if (!lightbox || !lightboxImg || !counter || !imagesData[index]) return;
-      lightbox.classList.add("flex");
+      if (!imagesData[index]) return;
       lightboxImg.style.opacity = "0";
+      lightboxImg.classList.add("scale-95");
+
       setTimeout(() => {
         lightboxImg.src = imagesData[index]!;
-        lightboxImg.style.opacity = "1";
         counter.textContent = `${index + 1} / ${imagesData.length}`;
+        lightboxImg.style.opacity = "1";
+        lightboxImg.classList.remove("scale-95");
       }, 200);
       currentIndex = index;
     };
 
     items.forEach((item, index) => {
-      item.addEventListener("click", () => {
-        if (lightbox && lightboxImg) {
-          updateImage(index);
-          lightbox.classList.remove("hidden");
-          setTimeout(() => {
-            lightbox.classList.add("opacity-100");
-            lightboxImg.classList.remove("scale-90");
-          }, 10);
-        }
-      });
+      (item as HTMLElement).onclick = () => {
+        updateImage(index);
+        lightbox.classList.remove("hidden");
+        lightbox.classList.add("flex");
+        // Navigáció elrejtése a Layout-ban lévő szabály miatt
+        document.body.classList.add("glightbox-open");
+        setTimeout(() => {
+          lightbox.classList.add("opacity-100");
+          lightboxImg.classList.remove("scale-90");
+        }, 10);
+      };
     });
 
     const showNext = () => {
       currentIndex = (currentIndex + 1) % imagesData.length;
       updateImage(currentIndex);
     };
+
     const showPrev = () => {
       currentIndex = (currentIndex - 1 + imagesData.length) % imagesData.length;
       updateImage(currentIndex);
     };
+
     const closeLightbox = () => {
-      if (lightbox && lightboxImg) {
-        lightbox.classList.remove("opacity-100", "flex");
+      lightbox.classList.remove("opacity-100", "flex");
+      document.body.classList.remove("glightbox-open");
+      setTimeout(() => {
+        lightbox.classList.add("hidden");
         lightboxImg.classList.add("scale-90");
-        setTimeout(() => lightbox.classList.add("hidden"), 300);
-      }
+      }, 300);
     };
 
-    nextBtn?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      showNext();
-    });
-    prevBtn?.addEventListener("click", (e) => {
-      e.stopPropagation();
-      showPrev();
-    });
-    closeBtn?.addEventListener("click", closeLightbox);
-    lightbox?.addEventListener("click", (e) => {
-      if (e.target === lightbox) closeLightbox();
-    });
+    // Gombok eseménykezelői
+    if (nextBtn) nextBtn.onclick = (e) => { e.stopPropagation(); showNext(); };
+    if (prevBtn) prevBtn.onclick = (e) => { e.stopPropagation(); showPrev(); };
+    if (closeBtn) closeBtn.onclick = closeLightbox;
 
-    window.addEventListener("keydown", (e) => {
-      if (lightbox?.classList.contains("hidden")) return;
+    lightbox.onclick = (e) => {
+      if (e.target === lightbox) closeLightbox();
+    };
+
+    // Billentyűzet kezelés
+    window.onkeydown = (e) => {
+      if (lightbox.classList.contains("hidden")) return;
       if (e.key === "ArrowRight") showNext();
       if (e.key === "ArrowLeft") showPrev();
       if (e.key === "Escape") closeLightbox();
-    });
+    };
   }
 
   setupAiGallery();
